@@ -96,5 +96,9 @@ CampusConnect/
   - **Role**: Programmer 1
   - **Focus**: Profile and Authentication modules.
 
+- **Arnold Oguda**
+  - **Role**: Programmer 4
+  - **Focus**: API and Database Endpoint integration.
+
 (Additional team members can be added here)
 
