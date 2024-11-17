@@ -15,7 +15,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Name"
-            android:inputType="textPersonName" />
+            android:inputType="textPersonName"
+            android:minHeight="48dp" />
 
         <!-- Email -->
         <EditText
@@ -23,7 +24,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Email"
-            android:inputType="textEmailAddress" />
+            android:inputType="textEmailAddress"
+            android:minHeight="48dp" />
 
         <!-- Phone -->
         <EditText
@@ -31,7 +33,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Phone"
-            android:inputType="phone" />
+            android:inputType="phone"
+            android:minHeight="48dp" />
 
         <!-- User Type -->
         <EditText
@@ -39,7 +42,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="User Type"
-            android:inputType="text" />
+            android:inputType="text"
+            android:minHeight="48dp" />
 
         <!-- Password -->
         <EditText
@@ -47,16 +51,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Password"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:minHeight="48dp" />
 
         <!-- Confirm Password -->
         <EditText
             android:id="@+id/confirmPasswordEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:hint="Confirm Password"
             android:inputType="textPassword"
-            android:layout_marginTop="8dp" />
+            android:minHeight="48dp" />
 
         <!-- Profile Photo Section -->
         <ImageView
@@ -64,10 +70,11 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_gravity="center"
-            android:src="@drawable/ic_profile_placeholder"
+            android:src="@drawable/default_profile_image"
             android:contentDescription="Profile Photo"
             android:scaleType="centerCrop"
-            android:background="@drawable/profile_image_border" />
+            android:background="@drawable/profile_image_border"
+            android:layout_marginTop="16dp" />
 
         <Button
             android:id="@+id/selectPhotoButton"
