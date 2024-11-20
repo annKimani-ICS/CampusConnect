@@ -24,7 +24,7 @@
 <!--        </activity>-->
 
         <activity
-            android:name=".ui.theme.CalendarIntegrationTestActivity"
+            android:name=".CalendarIntegrationTestActivity"
             android:exported="true"
             android:theme="@style/Theme.Campus_connect">
             <intent-filter>
