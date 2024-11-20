@@ -1,8 +1,10 @@
 package com.icsa.campus_connect.ui.theme
 
 import android.Manifest
+import android.content.ContentValues
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.os.Bundle
+import android.provider.CalendarContract
 import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
@@ -10,6 +12,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import java.util.TimeZone
 
 //1. Extend AppCompactActivity to allow lifecycle management and access to UI components
 class CalendarIntegrationTestActivity : AppCompatActivity(){
@@ -91,7 +94,34 @@ class CalendarIntegrationTestActivity : AppCompatActivity(){
     }
 
     private fun addEventToCalendar(title: String, description: String, location: String) {
+        try {
+//            Define event time to start 1 hour from now and end after 2 hours
+            val startTime = System.currentTimeMillis() + 60 * 60 * 1000
+            val endTime = startTime + 2 * 60 * 60 * 1000
 
+//            Set up event variables in a ContentValues()
+            val eventVariables = ContentValues()
+            eventVariables.put(CalendarContract.Events.CALENDAR_ID, 1) // could be improved to query for phone calendar specifically
+            eventVariables.put(CalendarContract.Events.TITLE, title)
+            eventVariables.put(CalendarContract.Events.DESCRIPTION, description)
+            eventVariables.put(CalendarContract.Events.EVENT_LOCATION, location)
+            eventVariables.put(CalendarContract.Events.DTSTART, startTime)
+            eventVariables.put(CalendarContract.Events.DTEND, endTime)
+            eventVariables.put(CalendarContract.Events.EVENT_TIMEZONE, TimeZone.getDefault().id)
+
+//            Insert event into Calendar
+            val uri = contentResolver.insert(CalendarContract.Events.CONTENT_URI, eventVariables)
+            if(uri != null){
+                val eventId = uri.lastPathSegment?.toLong()
+                Toast.makeText(this, "Event added with ID: $eventId", Toast.LENGTH_SHORT).show()
+            }else{
+                Toast.makeText(this, "Failed to add event", Toast.LENGTH_SHORT).show()
+            }
+
+        }catch (e: Exception){
+            e.printStackTrace()
+            Toast.makeText(this, "Error adding the event", Toast.LENGTH_SHORT).show()
+        }
     }
 
 }
