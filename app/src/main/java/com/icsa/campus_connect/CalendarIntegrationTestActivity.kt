@@ -1,4 +1,4 @@
-package com.icsa.campus_connect.ui.theme
+package com.icsa.campus_connect
 
 import android.Manifest
 import android.content.ContentValues
@@ -52,33 +52,12 @@ class CalendarIntegrationTestActivity : AppCompatActivity(){
     //4. Adding the UI for testing
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_calendar_integration_test)
 
-//        Root Layout
-        val rootLayout = LinearLayout(this)
-        rootLayout.orientation = LinearLayout.VERTICAL
-        rootLayout.setPadding(16,16,16,16)
-
-//        Title Input Field
-        val titleInput = EditText(this)
-        titleInput.hint = "Event Title"
-        rootLayout.addView(titleInput)
-
-//        Description Input Field
-        val descriptionInput = EditText(this)
-        descriptionInput.hint = "Event Description"
-        rootLayout.addView(descriptionInput)
-
-//        Location Input Field
-        val locationInput = EditText(this)
-        descriptionInput.hint = "Event Location"
-        rootLayout.addView(locationInput)
-
-//        Add Event Button
-        val addEventButton = Button(this)
-        descriptionInput.hint = "Event Description"
-        rootLayout.addView(addEventButton)
-
-        this.setContentView(rootLayout)
+        val titleInput = findViewById<EditText>(R.id.eventTitle)
+        val descriptionInput = findViewById<EditText>(R.id.eventDescription)
+        val locationInput = findViewById<EditText>(R.id.eventLocation)
+        val addEventButton = findViewById<Button>(R.id.btnAddEvent)
 
         addEventButton.setOnClickListener{
             if (hasCalendarPermission()){
