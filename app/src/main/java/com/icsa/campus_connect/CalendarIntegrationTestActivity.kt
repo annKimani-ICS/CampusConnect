@@ -77,6 +77,7 @@ class CalendarIntegrationTestActivity : AppCompatActivity(){
             val startTime = System.currentTimeMillis() + 60 * 60 * 1000
             val endTime = startTime + 2 * 60 * 60 * 1000
 
+
 //            Set up event variables in a ContentValues()
             val eventVariables = ContentValues()
             eventVariables.put(CalendarContract.Events.CALENDAR_ID, 1) // could be improved to query for phone calendar specifically
