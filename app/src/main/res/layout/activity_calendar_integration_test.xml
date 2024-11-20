@@ -9,16 +9,16 @@
     <EditText
         android:id="@+id/eventTitle"
         android:layout_width="match_parent"
-        android:layout_height="75dp"
+        android:layout_height="60dp"
         android:hint="@string/event_title"
         android:importantForAutofill="no"
-        android:minHeight="60dp"
+        android:minHeight="48dp"
         tools:ignore="TextFields" />
 
     <EditText
         android:id="@+id/eventDescription"
         android:layout_width="match_parent"
-        android:layout_height="73dp"
+        android:layout_height="60dp"
         android:hint="@string/event_description"
         android:importantForAutofill="no"
         android:minHeight="48dp"
