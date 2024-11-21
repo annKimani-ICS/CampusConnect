@@ -23,7 +23,7 @@ Campus Connect is a mobile application designed to improve university campus lif
 
 ## Technologies Used
 - **Language**: Kotlin
-- **Database**: Firebase Datavase.
+- **Database**: Firebase Database.
 - **User Interface**: XML layouts with Android Views and ViewGroups.
 - **Image Handling**: Gallery access and image compression for profile photos.
 - **Android Architecture**: MVVM (Model-View-ViewModel) for clear separation of concerns.
