@@ -74,7 +74,7 @@ CampusConnect/
 │   │   ├── main/
 │   │   │   ├── java/com/icsa/campus_connect/
 │   │   │   │   ├── activities/          # Activity classes (e.g., SignUpActivity, LoginActivity)
-│   │   │   │   ├── database/            # SQLite Database Helper
+│   │   │   │   ├── database/            # SQLite Database Helper --not needed for now
 │   │   │   │   ├── repository/          # Repository classes for database operations
 │   │   │   │   ├── models/              # Data models (e.g., UserModel, EventModel)
 │   │   ├── res/
