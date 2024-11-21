@@ -1,0 +1,44 @@
+{
+  "users": {
+    "userId1": {
+      "name": "John Doe",
+      "email": "john@example.com",
+      "phone": "1234567890",
+      "userType": "student",
+      "profilePhoto": "https://example.com/profilePhoto1.jpg"
+    },
+    "userId2": {
+      "name": "Jane Smith",
+      "email": "jane@example.com",
+      "phone": "0987654321",
+      "userType": "staff",
+      "profilePhoto": "https://example.com/profilePhoto2.jpg"
+    }
+  },
+  "events": {
+    "eventId1": {
+      "name": "Sports Day",
+      "date": "2024-12-01",
+      "description": "Annual sports event",
+      "tags": ["sports", "outdoor"]
+    },
+    "eventId2": {
+      "name": "Hackathon",
+      "date": "2024-12-05",
+      "description": "Tech coding competition",
+      "tags": ["coding", "tech", "competition"]
+    }
+  },
+  "announcements": {
+    "announcementId1": {
+      "title": "Exam Schedule Released",
+      "date": "2024-11-20",
+      "content": "The final exam schedule has been posted. Check your email for details."
+    },
+    "announcementId2": {
+      "title": "Library Closure",
+      "date": "2024-11-22",
+      "content": "The library will be closed for maintenance on Nov 25th."
+    }
+  }
+}
