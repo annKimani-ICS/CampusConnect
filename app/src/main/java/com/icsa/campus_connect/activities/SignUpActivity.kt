@@ -2,6 +2,7 @@ package com.icsa.campus_connect.activities
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
@@ -16,6 +17,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import com.icsa.campus_connect.R
 import com.icsa.campus_connect.repository.User
+import java.io.ByteArrayOutputStream
 import java.io.InputStream
 
 class SignUpActivity : AppCompatActivity() {
@@ -29,7 +31,7 @@ class SignUpActivity : AppCompatActivity() {
     private lateinit var signUpButton: Button
     private lateinit var selectPhotoButton: Button
     private lateinit var profileImageView: ImageView
-    private var selectedPhotoUri: Uri? = null // Store the photo URI for upload to Firebase
+    private var selectedPhoto: ByteArray? = null // Store the photo as a byte array
 
     private lateinit var auth: FirebaseAuth
     private val database = FirebaseDatabase.getInstance().reference.child("users")
@@ -78,11 +80,7 @@ class SignUpActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            if (selectedPhotoUri == null) {
-                Toast.makeText(this, "Please select a profile photo", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-
+            // Register user
             registerUser(name, email, phone, userType, password)
         }
     }
@@ -93,23 +91,50 @@ class SignUpActivity : AppCompatActivity() {
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     val userId = auth.currentUser?.uid ?: return@addOnCompleteListener
-                    uploadProfilePhoto(userId, name, email, phone, userType)
+                    saveUserToDatabase(userId, name, email, phone, userType)
                 } else {
                     Toast.makeText(this, "Registration failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
                 }
             }
     }
 
+    // Save user information to Firebase Realtime Database
+    private fun saveUserToDatabase(userId: String, name: String, email: String, phone: String, userType: String) {
+        val user = User(userId, name, email, phone, userType)
+
+        database.child(userId).setValue(user).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                // If the profile photo is selected, upload it to Firebase Storage
+                if (selectedPhoto != null) {
+                    uploadProfilePhoto(userId)
+                } else {
+                    Toast.makeText(this, "Sign-Up Successful!", Toast.LENGTH_SHORT).show()
+                    finish()
+                }
+            } else {
+                Toast.makeText(this, "Failed to save user data. Try again.", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
     // Upload profile photo to Firebase Storage
-    private fun uploadProfilePhoto(userId: String, name: String, email: String, phone: String, userType: String) {
+    private fun uploadProfilePhoto(userId: String) {
         val photoRef = storage.child(userId)
-        selectedPhotoUri?.let { uri ->
-            photoRef.putFile(uri)
+        selectedPhoto?.let {
+            photoRef.putBytes(it)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         // Get the download URL and update the user's profile
-                        photoRef.downloadUrl.addOnSuccessListener { downloadUri ->
-                            saveUserToDatabase(userId, name, email, phone, userType, downloadUri.toString())
+                        photoRef.downloadUrl.addOnSuccessListener { uri ->
+                            database.child(userId).child("profilePhoto").setValue(uri.toString())
+                                .addOnCompleteListener { dbTask ->
+                                    if (dbTask.isSuccessful) {
+                                        Toast.makeText(this, "Sign-Up Successful!", Toast.LENGTH_SHORT).show()
+                                        finish()
+                                    } else {
+                                        Toast.makeText(this, "Failed to save profile photo URL. Try again.", Toast.LENGTH_SHORT).show()
+                                    }
+                                }
                         }
                     } else {
                         Toast.makeText(this, "Failed to upload profile photo. Try again.", Toast.LENGTH_SHORT).show()
@@ -120,29 +145,20 @@ class SignUpActivity : AppCompatActivity() {
         }
     }
 
-    // Save user information to Firebase Realtime Database
-    private fun saveUserToDatabase(userId: String, name: String, email: String, phone: String, userType: String, profilePhotoUrl: String) {
-        val user = User(userId, name, email, phone, userType, profilePhotoUrl)
-
-        database.child(userId).setValue(user).addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                Toast.makeText(this, "Sign-Up Successful!", Toast.LENGTH_SHORT).show()
-                finish() // Close the activity or go to LoginActivity
-            } else {
-                Toast.makeText(this, "Failed to save user data. Try again.", Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
-
     // Handle photo selection result
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_CODE_SELECT_PHOTO && resultCode == Activity.RESULT_OK && data != null) {
-            selectedPhotoUri = data.data
+            val imageUri: Uri? = data.data
             try {
-                val inputStream: InputStream? = contentResolver.openInputStream(selectedPhotoUri!!)
+                val inputStream: InputStream? = contentResolver.openInputStream(imageUri!!)
                 val bitmap = BitmapFactory.decodeStream(inputStream)
                 profileImageView.setImageBitmap(bitmap) // Display the selected image
+
+                // Convert Bitmap to ByteArray for storing in Firebase Storage
+                val outputStream = ByteArrayOutputStream()
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+                selectedPhoto = outputStream.toByteArray()
             } catch (e: Exception) {
                 e.printStackTrace()
                 Toast.makeText(this, "Failed to select image", Toast.LENGTH_SHORT).show()
