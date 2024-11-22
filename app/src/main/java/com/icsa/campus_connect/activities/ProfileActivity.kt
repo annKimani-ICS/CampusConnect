@@ -30,10 +30,10 @@ class ProfileActivity : AppCompatActivity() {
 
             // Handle the profile photo
             val profileImageView = findViewById<ImageView>(R.id.profilePicture)
-            if (user.profilePhoto != null) {
+            if (user.profilePhotoUrl != null) {
                 // Convert ByteArray to Bitmap
-                val profileBitmap: Bitmap = BitmapFactory.decodeByteArray(user.profilePhoto, 0, user.profilePhoto.size)
-                profileImageView.setImageBitmap(profileBitmap)
+              //  val profileBitmap: Bitmap = BitmapFactory.decodeByteArray(user.profilePhotoUrl, 0, user.profilePhotoUrl.size)
+               // profileImageView.setImageBitmap(profileBitmap)
             } else {
                 // Set a default image if profile photo is not available
                 profileImageView.setImageResource(R.drawable.default_profile_image)

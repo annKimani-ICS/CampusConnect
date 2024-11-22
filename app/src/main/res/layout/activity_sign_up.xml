@@ -1,96 +1,94 @@
-<?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="16dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:gravity="center"
         android:padding="16dp">
 
-        <!-- Name -->
+        <TextView
+            android:id="@+id/signupTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sign Up"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@color/purple_500"
+            android:layout_marginBottom="24dp"/>
+
+        <ImageView
+            android:id="@+id/profileImageView"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginBottom="16dp"
+            android:src="@drawable/default_profile_image"
+            android:scaleType="centerCrop" />
+
+        <Button
+            android:id="@+id/selectPhotoButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Select Profile Photo"
+            android:layout_marginBottom="16dp"/>
+
         <EditText
             android:id="@+id/nameEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Name"
+            android:hint="Full Name"
             android:inputType="textPersonName"
-            android:minHeight="48dp" />
+            android:layout_marginBottom="16dp"/>
 
-        <!-- Email -->
         <EditText
             android:id="@+id/emailEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Email"
             android:inputType="textEmailAddress"
-            android:minHeight="48dp" />
+            android:layout_marginBottom="16dp"/>
 
-        <!-- Phone -->
         <EditText
             android:id="@+id/phoneEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Phone"
+            android:hint="Phone Number"
             android:inputType="phone"
-            android:minHeight="48dp" />
+            android:layout_marginBottom="16dp"/>
 
-        <!-- User Type -->
         <EditText
             android:id="@+id/userTypeEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="User Type"
-            android:inputType="text"
-            android:minHeight="48dp" />
+            android:layout_marginBottom="16dp"/>
 
-        <!-- Password -->
         <EditText
             android:id="@+id/passwordEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Password"
             android:inputType="textPassword"
-            android:minHeight="48dp" />
+            android:layout_marginBottom="16dp"/>
 
-        <!-- Confirm Password -->
         <EditText
             android:id="@+id/confirmPasswordEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:hint="Confirm Password"
             android:inputType="textPassword"
-            android:minHeight="48dp" />
+            android:layout_marginBottom="24dp"/>
 
-        <!-- Profile Photo Section -->
-        <ImageView
-            android:id="@+id/profileImageView"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_gravity="center"
-            android:src="@drawable/default_profile_image"
-            android:contentDescription="Profile Photo"
-            android:scaleType="centerCrop"
-            android:background="@drawable/profile_image_border"
-            android:layout_marginTop="16dp" />
-
-        <Button
-            android:id="@+id/selectPhotoButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="8dp"
-            android:text="Select Photo" />
-
-        <!-- Sign Up Button -->
         <Button
             android:id="@+id/signUpButton"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Sign Up"
-            android:layout_marginTop="16dp" />
+            android:text="Sign Up" />
 
     </LinearLayout>
+
 </ScrollView>

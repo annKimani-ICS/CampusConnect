@@ -3,7 +3,9 @@ package com.icsa.campus_connect
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.database.FirebaseDatabase
 import com.icsa.campus_connect.activities.LoginActivity
 import com.icsa.campus_connect.activities.SignUpActivity
 
@@ -16,19 +18,29 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // Initialize buttons
-        loginButton = findViewById(R.id.loginButton)
-        signUpButton = findViewById(R.id.signUpButton)
+        try {
+            // Initialize Firebase Database
+            val database = FirebaseDatabase.getInstance()
 
-        // Set click listeners to navigate to Login and SignUp activities
-        loginButton.setOnClickListener {
-            val loginIntent = Intent(this, LoginActivity::class.java)
-            startActivity(loginIntent)
-        }
+            // Find views by their IDs
+            loginButton = findViewById(R.id.loginButton)
+            signUpButton = findViewById(R.id.signUpButton)
 
-        signUpButton.setOnClickListener {
-            val signUpIntent = Intent(this, SignUpActivity::class.java)
-            startActivity(signUpIntent)
+            // Set onClickListener to navigate to LoginActivity
+            loginButton.setOnClickListener {
+                val loginIntent = Intent(this, LoginActivity::class.java)
+                startActivity(loginIntent)
+            }
+
+            // Set onClickListener to navigate to SignUpActivity
+            signUpButton.setOnClickListener {
+                val signUpIntent = Intent(this, SignUpActivity::class.java)
+                startActivity(signUpIntent)
+            }
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Toast.makeText(this, "Error initializing Firebase or UI components", Toast.LENGTH_LONG).show()
         }
     }
 }

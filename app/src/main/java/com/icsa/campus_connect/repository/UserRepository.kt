@@ -8,14 +8,14 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 
-// User data class
 data class User(
     val userId: String = "",
     val userName: String = "",
     val userEmail: String = "",
     val userPhone: String = "",
     val userType: String = "",
-    val profilePhoto: ByteArray? = null
+    val profilePhotoUrl: String = "",  // Changed from ByteArray? to String
+    val userPassword: String = ""
 )
 
 class UserRepository(context: Context) {
