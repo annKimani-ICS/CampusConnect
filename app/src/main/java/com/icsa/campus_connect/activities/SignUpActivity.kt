@@ -7,10 +7,7 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
@@ -26,12 +23,14 @@ class SignUpActivity : AppCompatActivity() {
     private lateinit var nameEditText: EditText
     private lateinit var emailEditText: EditText
     private lateinit var phoneEditText: EditText
-    private lateinit var userTypeEditText: EditText
     private lateinit var passwordEditText: EditText
     private lateinit var confirmPasswordEditText: EditText
     private lateinit var signUpButton: Button
     private lateinit var selectPhotoButton: Button
     private lateinit var profileImageView: ImageView
+    private lateinit var userTypeRadioGroup: RadioGroup
+    private lateinit var studentRadioButton: RadioButton
+    private lateinit var organiserRadioButton: RadioButton
     private var selectedPhoto: ByteArray? = null // Store the photo as a byte array
 
     private lateinit var auth: FirebaseAuth
@@ -46,12 +45,14 @@ class SignUpActivity : AppCompatActivity() {
         nameEditText = findViewById(R.id.nameEditText)
         emailEditText = findViewById(R.id.emailEditText)
         phoneEditText = findViewById(R.id.phoneEditText)
-        userTypeEditText = findViewById(R.id.userTypeEditText)
         passwordEditText = findViewById(R.id.passwordEditText)
         confirmPasswordEditText = findViewById(R.id.confirmPasswordEditText)
         signUpButton = findViewById(R.id.signUpButton)
         selectPhotoButton = findViewById(R.id.selectPhotoButton)
         profileImageView = findViewById(R.id.profileImageView)
+        userTypeRadioGroup = findViewById(R.id.userTypeRadioGroup)
+        studentRadioButton = findViewById(R.id.studentRadioButton)
+        organiserRadioButton = findViewById(R.id.organiserRadioButton)
 
         auth = FirebaseAuth.getInstance()
 
@@ -67,9 +68,15 @@ class SignUpActivity : AppCompatActivity() {
             val name = nameEditText.text.toString().trim()
             val email = emailEditText.text.toString().trim()
             val phone = phoneEditText.text.toString().trim()
-            val userType = userTypeEditText.text.toString().trim()
             val password = passwordEditText.text.toString().trim()
             val confirmPassword = confirmPasswordEditText.text.toString().trim()
+
+            // Get selected user type
+            val userType = when (userTypeRadioGroup.checkedRadioButtonId) {
+                R.id.studentRadioButton -> "Student"
+                R.id.organiserRadioButton -> "Organiser"
+                else -> ""
+            }
 
             if (name.isEmpty() || email.isEmpty() || phone.isEmpty() || userType.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
                 Toast.makeText(this, "All fields are required", Toast.LENGTH_SHORT).show()
@@ -87,7 +94,7 @@ class SignUpActivity : AppCompatActivity() {
     }
 
     // Hashing function for passwords
-    private fun hashPassword(password: String): String {
+    fun hashPassword(password: String): String {
         val digest = MessageDigest.getInstance("SHA-256")
         val hashBytes = digest.digest(password.toByteArray())
         return hashBytes.joinToString("") { "%02x".format(it) }

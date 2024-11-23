@@ -71,14 +71,25 @@
             android:hint="@string/phone_number"
             android:inputType="phone" />
 
-        <EditText
-            android:id="@+id/userTypeEditText"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginBottom="16dp"
-            android:autofillHints=""
-            android:hint="@string/user_type"
-             />
+        <RadioGroup
+            android:id="@+id/userTypeRadioGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/studentRadioButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Student" />
+
+            <RadioButton
+                android:id="@+id/organiserRadioButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Organiser" />
+
+        </RadioGroup>
 
         <EditText
             android:id="@+id/passwordEditText"
