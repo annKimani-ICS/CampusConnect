@@ -16,11 +16,11 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        setContent {
-            Campus_connectTheme {
-                Greeting("Campus Connect") // Update the greeting argument here
-            }
-        }
+//        setContent {
+//            Campus_connectTheme {
+//                Greeting("Campus Connect") // Update the greeting argument here
+//            }
+//
 
         val dbHelper = DatabaseHelper(this)
         val db = dbHelper.writableDatabase
