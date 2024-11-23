@@ -1,7 +1,5 @@
 package com.icsa.campus_connect
 
-import android.content.ContentValues
-import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -12,13 +10,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.icsa.campus_connect.database.DatabaseHelper
 import com.icsa.campus_connect.ui.theme.Campus_connectTheme
-import android.database.Cursor
-import android.database.sqlite.SQLiteDatabase
-import android.database.sqlite.SQLiteOpenHelper
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.ui.text.style.TextDirection.Companion.Content
-import java.io.File
 
 class MainActivity : ComponentActivity() {
 
