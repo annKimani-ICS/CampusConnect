@@ -10,13 +10,14 @@ import com.google.firebase.database.ValueEventListener
 
 data class User(
     val userId: String = "",
-    val userName: String = "",
+    val firstName: String = "",
+    val middleName: String = "",
+    val lastName: String = "",
     val userEmail: String = "",
     val userPhone: String = "",
     val userType: String = "",
     val profilePhotoUrl: String = "",  // Changed from ByteArray? to String
-    val userPassword: String = "",
-    val password: String
+    val userPassword: String = ""
 )
 
 class UserRepository(context: Context) {
@@ -25,7 +26,16 @@ class UserRepository(context: Context) {
     private var loggedInUser: User? = null // To track the logged-in user
 
     // Register user using Firebase Authentication
-    fun registerUser(userName: String, email: String, phone: String, userType: String, password: String, onComplete: (Boolean) -> Unit) {
+    fun registerUser(
+        firstName: String,
+        middleName: String,
+        lastName: String,
+        email: String,
+        phone: String,
+        userType: String,
+        password: String,
+        onComplete: (Boolean) -> Unit
+    ) {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
@@ -33,11 +43,13 @@ class UserRepository(context: Context) {
                     val userId = task.result?.user?.uid ?: return@addOnCompleteListener
                     val newUser = User(
                         userId = userId,
-                        userName = userName,
+                        firstName = firstName,
+                        middleName = middleName,
+                        lastName = lastName,
                         userEmail = email,
                         userPhone = phone,
                         userType = userType,
-                        password = password
+                        userPassword = password
                     )
 
                     // Save additional user info in Realtime Database
