@@ -11,17 +11,14 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
-import com.icsa.campus_connect.MainActivity
 import com.icsa.campus_connect.R
 import com.icsa.campus_connect.repository.User
-import com.icsa.campus_connect.repository.UserRepository
 
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var emailEditText: EditText
     private lateinit var passwordEditText: EditText
     private lateinit var loginButton: Button
-    private lateinit var userRepository: UserRepository
     private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,7 +29,6 @@ class LoginActivity : AppCompatActivity() {
         emailEditText = findViewById(R.id.emailInput)
         passwordEditText = findViewById(R.id.passwordInput)
         loginButton = findViewById(R.id.loginButton)
-        userRepository = UserRepository(this)
 
         // Initialize Firebase Auth
         auth = FirebaseAuth.getInstance()
@@ -65,9 +61,10 @@ class LoginActivity : AppCompatActivity() {
                         override fun onDataChange(dataSnapshot: DataSnapshot) {
                             val user = dataSnapshot.getValue(User::class.java)
                             if (user != null) {
-                                // Login successful, proceed to the next activity
+                                // Login successful, proceed to ProfileActivity
                                 Toast.makeText(this@LoginActivity, "Login successful", Toast.LENGTH_SHORT).show()
-                                val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                                val intent = Intent(this@LoginActivity, ProfileActivity::class.java)
+                                intent.putExtra("userId", userId) // Pass userId to ProfileActivity
                                 startActivity(intent)
                                 finish() // Close login activity
                             } else {
