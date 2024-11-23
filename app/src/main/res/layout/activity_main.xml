@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#000C18"
@@ -9,29 +10,41 @@
     <TextView
         android:id="@+id/welcomeTextView"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="51dp"
         android:layout_marginBottom="24dp"
         android:fontFamily="@font/ar_one_sans"
         android:lineSpacingExtra="13sp"
         android:text="@string/welcome_to_campus_connect"
         android:textAlignment="center"
         android:textColor="#FBFBFB"
-        android:textSize="34sp"
-        android:textStyle="bold" />
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:typeface="normal" />
 
     <Button
         android:id="@+id/loginButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:background="#A776FD"
-        android:text="@string/login_btn_text" />
+        android:background="#9969E4"
+        android:ellipsize="none"
+        android:fontFamily="@font/ar_one_sans"
+        android:phoneNumber="false"
+        android:text="@string/login_btn_text"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        tools:ignore="Deprecated,TextViewEdits" />
 
     <Button
         android:id="@+id/signUpButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="98dp"
+        android:layout_height="59dp"
         android:layout_marginTop="16dp"
-        android:text="@string/sign_up_btn_text" />
+        android:backgroundTint="@color/white"
+        android:fontFamily="@font/ar_one_sans"
+        android:text="@string/sign_up_btn_text"
+        android:textAlignment="center"
+        android:textColor="#9969E4"
+        android:textStyle="bold" />
 
 </LinearLayout>

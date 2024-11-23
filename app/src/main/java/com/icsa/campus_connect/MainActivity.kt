@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity() {
 
         try {
             // Initialize Firebase Database
-            val database = FirebaseDatabase.getInstance()
+            FirebaseDatabase.getInstance()
 
             // Find views by their IDs
             loginButton = findViewById(R.id.loginButton)
