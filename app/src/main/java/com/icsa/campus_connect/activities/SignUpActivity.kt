@@ -19,6 +19,7 @@ import com.icsa.campus_connect.R
 import com.icsa.campus_connect.repository.User
 import java.io.ByteArrayOutputStream
 import java.io.InputStream
+import java.security.MessageDigest
 
 class SignUpActivity : AppCompatActivity() {
 
@@ -85,13 +86,21 @@ class SignUpActivity : AppCompatActivity() {
         }
     }
 
+    // Hashing function for passwords
+    private fun hashPassword(password: String): String {
+        val digest = MessageDigest.getInstance("SHA-256")
+        val hashBytes = digest.digest(password.toByteArray())
+        return hashBytes.joinToString("") { "%02x".format(it) }
+    }
+
     // Register user using Firebase Authentication
     private fun registerUser(name: String, email: String, phone: String, userType: String, password: String) {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     val userId = auth.currentUser?.uid ?: return@addOnCompleteListener
-                    saveUserToDatabase(userId, name, email, phone, userType)
+                    val hashedPassword = hashPassword(password)
+                    saveUserToDatabase(userId, name, email, phone, userType, hashedPassword)
                 } else {
                     Toast.makeText(this, "Registration failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
                 }
@@ -99,8 +108,15 @@ class SignUpActivity : AppCompatActivity() {
     }
 
     // Save user information to Firebase Realtime Database
-    private fun saveUserToDatabase(userId: String, name: String, email: String, phone: String, userType: String) {
-        val user = User(userId, name, email, phone, userType)
+    private fun saveUserToDatabase(
+        userId: String,
+        name: String,
+        email: String,
+        phone: String,
+        userType: String,
+        password: String
+    ) {
+        val user = User(userId, name, email, phone, userType, userPassword = password)
 
         database.child(userId).setValue(user).addOnCompleteListener { task ->
             if (task.isSuccessful) {
