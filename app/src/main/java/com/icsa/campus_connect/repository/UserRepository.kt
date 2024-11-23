@@ -15,7 +15,8 @@ data class User(
     val userPhone: String = "",
     val userType: String = "",
     val profilePhotoUrl: String = "",  // Changed from ByteArray? to String
-    val userPassword: String = ""
+    val userPassword: String = "",
+    val password: String
 )
 
 class UserRepository(context: Context) {
@@ -30,7 +31,14 @@ class UserRepository(context: Context) {
                 if (task.isSuccessful) {
                     // User registered successfully
                     val userId = task.result?.user?.uid ?: return@addOnCompleteListener
-                    val newUser = User(userId = userId, userName = userName, userEmail = email, userPhone = phone, userType = userType)
+                    val newUser = User(
+                        userId = userId,
+                        userName = userName,
+                        userEmail = email,
+                        userPhone = phone,
+                        userType = userType,
+                        password = password
+                    )
 
                     // Save additional user info in Realtime Database
                     database.child(userId).setValue(newUser).addOnCompleteListener { dbTask ->

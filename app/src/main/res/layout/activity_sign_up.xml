@@ -44,13 +44,22 @@
             android:textStyle="bold" />
 
         <EditText
-            android:id="@+id/nameEditText"
+            android:id="@+id/firstNameEditText"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginBottom="16dp"
-            android:autofillHints=""
-            android:hint="@string/full_name"
-            android:inputType="textPersonName" />
+            android:layout_height="wrap_content"
+            android:hint="First Name" />
+
+        <EditText
+            android:id="@+id/middleNameEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Middle Name" />
+
+        <EditText
+            android:id="@+id/lastNameEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Last Name" />
 
         <EditText
             android:id="@+id/emailEditText"

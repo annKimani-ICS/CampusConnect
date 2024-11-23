@@ -20,7 +20,9 @@ import java.security.MessageDigest
 
 class SignUpActivity : AppCompatActivity() {
 
-    private lateinit var nameEditText: EditText
+    private lateinit var firstNameEditText: EditText
+    private lateinit var middleNameEditText: EditText
+    private lateinit var lastNameEditText: EditText
     private lateinit var emailEditText: EditText
     private lateinit var phoneEditText: EditText
     private lateinit var passwordEditText: EditText
@@ -29,8 +31,6 @@ class SignUpActivity : AppCompatActivity() {
     private lateinit var selectPhotoButton: Button
     private lateinit var profileImageView: ImageView
     private lateinit var userTypeRadioGroup: RadioGroup
-    private lateinit var studentRadioButton: RadioButton
-    private lateinit var organiserRadioButton: RadioButton
     private var selectedPhoto: ByteArray? = null // Store the photo as a byte array
 
     private lateinit var auth: FirebaseAuth
@@ -42,7 +42,9 @@ class SignUpActivity : AppCompatActivity() {
         setContentView(R.layout.activity_sign_up)
 
         // Initialize views
-        nameEditText = findViewById(R.id.nameEditText)
+        firstNameEditText = findViewById(R.id.firstNameEditText)
+        middleNameEditText = findViewById(R.id.middleNameEditText)
+        lastNameEditText = findViewById(R.id.lastNameEditText)
         emailEditText = findViewById(R.id.emailEditText)
         phoneEditText = findViewById(R.id.phoneEditText)
         passwordEditText = findViewById(R.id.passwordEditText)
@@ -51,8 +53,6 @@ class SignUpActivity : AppCompatActivity() {
         selectPhotoButton = findViewById(R.id.selectPhotoButton)
         profileImageView = findViewById(R.id.profileImageView)
         userTypeRadioGroup = findViewById(R.id.userTypeRadioGroup)
-        studentRadioButton = findViewById(R.id.studentRadioButton)
-        organiserRadioButton = findViewById(R.id.organiserRadioButton)
 
         auth = FirebaseAuth.getInstance()
 
@@ -65,7 +65,9 @@ class SignUpActivity : AppCompatActivity() {
 
         // Sign-Up Button Logic
         signUpButton.setOnClickListener {
-            val name = nameEditText.text.toString().trim()
+            val firstName = firstNameEditText.text.toString().trim()
+            val middleName = middleNameEditText.text.toString().trim()
+            val lastName = lastNameEditText.text.toString().trim()
             val email = emailEditText.text.toString().trim()
             val phone = phoneEditText.text.toString().trim()
             val password = passwordEditText.text.toString().trim()
@@ -78,8 +80,8 @@ class SignUpActivity : AppCompatActivity() {
                 else -> ""
             }
 
-            if (name.isEmpty() || email.isEmpty() || phone.isEmpty() || userType.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
-                Toast.makeText(this, "All fields are required", Toast.LENGTH_SHORT).show()
+            if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || phone.isEmpty() || userType.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+                Toast.makeText(this, "All required fields must be filled", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
@@ -89,25 +91,33 @@ class SignUpActivity : AppCompatActivity() {
             }
 
             // Register user
-            registerUser(name, email, phone, userType, password)
+            registerUser(firstName, middleName, lastName, email, phone, userType, password)
         }
     }
 
     // Hashing function for passwords
-    fun hashPassword(password: String): String {
+    private fun hashPassword(password: String): String {
         val digest = MessageDigest.getInstance("SHA-256")
         val hashBytes = digest.digest(password.toByteArray())
         return hashBytes.joinToString("") { "%02x".format(it) }
     }
 
     // Register user using Firebase Authentication
-    private fun registerUser(name: String, email: String, phone: String, userType: String, password: String) {
+    private fun registerUser(
+        firstName: String,
+        middleName: String,
+        lastName: String,
+        email: String,
+        phone: String,
+        userType: String,
+        password: String
+    ) {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     val userId = auth.currentUser?.uid ?: return@addOnCompleteListener
                     val hashedPassword = hashPassword(password)
-                    saveUserToDatabase(userId, name, email, phone, userType, hashedPassword)
+                    saveUserToDatabase(userId, firstName, middleName, lastName, email, phone, userType, hashedPassword)
                 } else {
                     Toast.makeText(this, "Registration failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
                 }
@@ -117,13 +127,15 @@ class SignUpActivity : AppCompatActivity() {
     // Save user information to Firebase Realtime Database
     private fun saveUserToDatabase(
         userId: String,
-        name: String,
+        firstName: String,
+        middleName: String,
+        lastName: String,
         email: String,
         phone: String,
         userType: String,
         password: String
     ) {
-        val user = User(userId, name, email, phone, userType, userPassword = password)
+        val user = User(userId, firstName, middleName, lastName, email, phone, userType, password)
 
         database.child(userId).setValue(user).addOnCompleteListener { task ->
             if (task.isSuccessful) {
