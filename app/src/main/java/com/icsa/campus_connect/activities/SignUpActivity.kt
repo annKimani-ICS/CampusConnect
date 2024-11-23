@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
@@ -146,30 +147,34 @@ class SignUpActivity : AppCompatActivity() {
         }
     }
 
-    // Upload profile photo to Firebase Storage
     private fun uploadProfilePhoto(userId: String) {
-        val photoRef = storage.child(userId)
+        val photoRef = storage.child("users/$userId/profilePhoto.jpg")
         selectedPhoto?.let {
             photoRef.putBytes(it)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
-                        // Get the download URL and update the user's profile
                         photoRef.downloadUrl.addOnSuccessListener { uri ->
                             database.child(userId).child("profilePhotoUrl").setValue(uri.toString())
                                 .addOnCompleteListener { dbTask ->
                                     if (dbTask.isSuccessful) {
                                         Toast.makeText(this, "Sign-Up Successful!", Toast.LENGTH_SHORT).show()
-                                        redirectToLogin() // Redirect after successful signup
+                                        redirectToLogin()
                                     } else {
+                                        Log.e("FirebasePhoto", "Failed to save profile photo URL to database: ${dbTask.exception?.message}")
                                         Toast.makeText(this, "Failed to save profile photo URL. Try again.", Toast.LENGTH_SHORT).show()
                                     }
                                 }
+                        }.addOnFailureListener { exception ->
+                            Log.e("FirebasePhoto", "Failed to get photo URL: ${exception.message}")
+                            Toast.makeText(this, "Failed to get photo URL. Try again.", Toast.LENGTH_SHORT).show()
                         }
                     } else {
+                        Log.e("FirebasePhoto", "Failed to upload profile photo: ${task.exception?.message}")
                         Toast.makeText(this, "Failed to upload profile photo. Try again.", Toast.LENGTH_SHORT).show()
                     }
                 }
         } ?: run {
+            Log.e("FirebasePhoto", "No photo selected")
             Toast.makeText(this, "No photo selected", Toast.LENGTH_SHORT).show()
         }
     }
