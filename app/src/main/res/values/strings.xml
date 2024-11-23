@@ -3,4 +3,15 @@
     <string name="welcome_to_campus_connect">Welcome to Campus Connect!</string>
     <string name="login_btn_text">Login</string>
     <string name="sign_up_btn_text">Sign Up</string>
+    <string name="email_text">Email</string>
+    <string name="password_text">Password</string>
+    <string name="sign_up_text">Sign Up</string>
+    <string name="profile_image_content_desc">profile image</string>
+    <string name="select_profile_photo">Select Profile Photo</string>
+    <string name="full_name">Full Name</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="user_type">User Type</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="select_profile_photo_text">Select Profile Photo</string>
 </resources>

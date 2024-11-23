@@ -1,93 +1,113 @@
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:padding="16dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:gravity="center"
+        android:orientation="vertical"
         android:padding="16dp">
 
         <TextView
             android:id="@+id/signupTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Sign Up"
-            android:textSize="24sp"
-            android:textStyle="bold"
+            android:layout_marginBottom="24dp"
+            android:fontFamily="@font/ar_one_sans"
+            android:text="@string/sign_up_text"
             android:textColor="@color/purple_500"
-            android:layout_marginBottom="24dp"/>
+            android:textSize="24sp"
+            android:textStyle="bold" />
 
         <ImageView
             android:id="@+id/profileImageView"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_marginBottom="16dp"
-            android:src="@drawable/default_profile_image"
-            android:scaleType="centerCrop" />
+            android:contentDescription="@string/profile_image_content_desc"
+            android:scaleType="centerCrop"
+            android:src="@drawable/default_profile_image" />
 
         <Button
             android:id="@+id/selectPhotoButton"
-            android:layout_width="wrap_content"
+            android:layout_width="179dp"
             android:layout_height="wrap_content"
-            android:text="Select Profile Photo"
-            android:layout_marginBottom="16dp"/>
+            android:layout_marginBottom="16dp"
+            android:background="#000C18"
+            android:contentDescription="@string/select_profile_photo_text"
+            android:fontFamily="@font/ar_one_sans"
+            android:text="@string/select_profile_photo"
+            android:textColor="#9969E4"
+            android:textStyle="bold" />
 
         <EditText
             android:id="@+id/nameEditText"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Full Name"
-            android:inputType="textPersonName"
-            android:layout_marginBottom="16dp"/>
+            android:layout_height="50dp"
+            android:layout_marginBottom="16dp"
+            android:autofillHints=""
+            android:hint="@string/full_name"
+            android:inputType="textPersonName" />
 
         <EditText
             android:id="@+id/emailEditText"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Email"
-            android:inputType="textEmailAddress"
-            android:layout_marginBottom="16dp"/>
+            android:layout_height="50dp"
+            android:layout_marginBottom="16dp"
+            android:autofillHints=""
+            android:backgroundTint="@color/black"
+            android:hint="@string/email_text"
+            android:inputType="textEmailAddress" />
 
         <EditText
             android:id="@+id/phoneEditText"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Phone Number"
-            android:inputType="phone"
-            android:layout_marginBottom="16dp"/>
+            android:layout_height="50dp"
+            android:layout_marginBottom="16dp"
+            android:autofillHints=""
+            android:hint="@string/phone_number"
+            android:inputType="phone" />
 
         <EditText
             android:id="@+id/userTypeEditText"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="User Type"
-            android:layout_marginBottom="16dp"/>
+            android:layout_height="50dp"
+            android:layout_marginBottom="16dp"
+            android:autofillHints=""
+            android:hint="@string/user_type"
+             />
 
         <EditText
             android:id="@+id/passwordEditText"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Password"
-            android:inputType="textPassword"
-            android:layout_marginBottom="16dp"/>
+            android:layout_height="50dp"
+            android:layout_marginBottom="16dp"
+            android:autofillHints=""
+            android:hint="@string/password_text"
+            android:inputType="textPassword" />
 
         <EditText
             android:id="@+id/confirmPasswordEditText"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Confirm Password"
-            android:inputType="textPassword"
-            android:layout_marginBottom="24dp"/>
+            android:layout_height="50dp"
+            android:layout_marginBottom="24dp"
+            android:autofillHints=""
+            android:background="#EFE4E4"
+            android:hint="@string/confirm_password"
+            android:inputType="textPassword" />
 
         <Button
             android:id="@+id/signUpButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Sign Up" />
+            android:background="#000C18"
+            android:fontFamily="@font/ar_one_sans"
+            android:text="@string/sign_up"
+            android:textColor="#9969E4"
+            android:textStyle="bold" />
 
     </LinearLayout>
 
