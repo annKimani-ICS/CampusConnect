@@ -30,7 +30,8 @@ class SignUpActivity : AppCompatActivity() {
     private lateinit var signUpButton: Button
     private lateinit var selectPhotoButton: Button
     private lateinit var profileImageView: ImageView
-    private lateinit var userTypeRadioGroup: RadioGroup
+    private lateinit var studentRadioButton: RadioButton
+    private lateinit var organiserRadioButton: RadioButton
     private var selectedPhoto: ByteArray? = null // Store the photo as a byte array
 
     private lateinit var auth: FirebaseAuth
@@ -52,7 +53,8 @@ class SignUpActivity : AppCompatActivity() {
         signUpButton = findViewById(R.id.signUpButton)
         selectPhotoButton = findViewById(R.id.selectPhotoButton)
         profileImageView = findViewById(R.id.profileImageView)
-        userTypeRadioGroup = findViewById(R.id.userTypeRadioGroup)
+        studentRadioButton = findViewById(R.id.studentRadioButton)
+        organiserRadioButton = findViewById(R.id.organiserRadioButton)
 
         auth = FirebaseAuth.getInstance()
 
@@ -73,15 +75,15 @@ class SignUpActivity : AppCompatActivity() {
             val password = passwordEditText.text.toString().trim()
             val confirmPassword = confirmPasswordEditText.text.toString().trim()
 
-            // Get selected user type
-            val userType = when (userTypeRadioGroup.checkedRadioButtonId) {
-                R.id.studentRadioButton -> "Student"
-                R.id.organiserRadioButton -> "Organiser"
+            // Determine user type
+            val userType = when {
+                studentRadioButton.isChecked -> "Student"
+                organiserRadioButton.isChecked -> "Organiser"
                 else -> ""
             }
 
-            if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || phone.isEmpty() || userType.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
-                Toast.makeText(this, "All required fields must be filled", Toast.LENGTH_SHORT).show()
+            if (firstName.isEmpty() || email.isEmpty() || phone.isEmpty() || userType.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+                Toast.makeText(this, "All fields are required", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
@@ -96,22 +98,14 @@ class SignUpActivity : AppCompatActivity() {
     }
 
     // Hashing function for passwords
-    private fun hashPassword(password: String): String {
+    fun hashPassword(password: String): String {
         val digest = MessageDigest.getInstance("SHA-256")
         val hashBytes = digest.digest(password.toByteArray())
         return hashBytes.joinToString("") { "%02x".format(it) }
     }
 
     // Register user using Firebase Authentication
-    private fun registerUser(
-        firstName: String,
-        middleName: String,
-        lastName: String,
-        email: String,
-        phone: String,
-        userType: String,
-        password: String
-    ) {
+    private fun registerUser(firstName: String, middleName: String, lastName: String, email: String, phone: String, userType: String, password: String) {
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
@@ -135,7 +129,7 @@ class SignUpActivity : AppCompatActivity() {
         userType: String,
         password: String
     ) {
-        val user = User(userId, firstName, middleName, lastName, email, phone, userType, password)
+        val user = User(userId, firstName, middleName, lastName, email, phone, userType, userPassword = password)
 
         database.child(userId).setValue(user).addOnCompleteListener { task ->
             if (task.isSuccessful) {
@@ -144,7 +138,7 @@ class SignUpActivity : AppCompatActivity() {
                     uploadProfilePhoto(userId)
                 } else {
                     Toast.makeText(this, "Sign-Up Successful!", Toast.LENGTH_SHORT).show()
-                    finish()
+                    redirectToLogin() // Redirect after successful signup
                 }
             } else {
                 Toast.makeText(this, "Failed to save user data. Try again.", Toast.LENGTH_SHORT).show()
@@ -161,11 +155,11 @@ class SignUpActivity : AppCompatActivity() {
                     if (task.isSuccessful) {
                         // Get the download URL and update the user's profile
                         photoRef.downloadUrl.addOnSuccessListener { uri ->
-                            database.child(userId).child("profilePhoto").setValue(uri.toString())
+                            database.child(userId).child("profilePhotoUrl").setValue(uri.toString())
                                 .addOnCompleteListener { dbTask ->
                                     if (dbTask.isSuccessful) {
                                         Toast.makeText(this, "Sign-Up Successful!", Toast.LENGTH_SHORT).show()
-                                        finish()
+                                        redirectToLogin() // Redirect after successful signup
                                     } else {
                                         Toast.makeText(this, "Failed to save profile photo URL. Try again.", Toast.LENGTH_SHORT).show()
                                     }
@@ -178,6 +172,14 @@ class SignUpActivity : AppCompatActivity() {
         } ?: run {
             Toast.makeText(this, "No photo selected", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    // Redirect to LoginActivity after successful registration
+    private fun redirectToLogin() {
+        Toast.makeText(this, "Redirecting to login...", Toast.LENGTH_SHORT).show()
+        val intent = Intent(this, LoginActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 
     // Handle photo selection result
