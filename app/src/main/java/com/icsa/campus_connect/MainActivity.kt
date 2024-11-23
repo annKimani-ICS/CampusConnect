@@ -1,54 +1,46 @@
 package com.icsa.campus_connect
 
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import androidx.activity.ComponentActivity
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.icsa.campus_connect.database.DatabaseHelper
-import com.icsa.campus_connect.ui.theme.Campus_connectTheme
+import android.widget.Button
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.database.FirebaseDatabase
+import com.icsa.campus_connect.activities.LoginActivity
+import com.icsa.campus_connect.activities.SignUpActivity
 
-class MainActivity : ComponentActivity() {
+class MainActivity : AppCompatActivity() {
+
+    private lateinit var loginButton: Button
+    private lateinit var signUpButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val dbHelper = DatabaseHelper(this)
-        val db = dbHelper.writableDatabase
+        try {
+            // Initialize Firebase Database
+            val database = FirebaseDatabase.getInstance()
 
-        // Check if the database is open
-        if (db.isOpen) {
-            Log.d("DatabaseTest", "Database opened successfully.")
-        } else {
-            Log.e("DatabaseTest", "Failed to open database.")
+            // Find views by their IDs
+            loginButton = findViewById(R.id.loginButton)
+            signUpButton = findViewById(R.id.signUpButton)
+
+            // Set onClickListener to navigate to LoginActivity
+            loginButton.setOnClickListener {
+                val loginIntent = Intent(this, LoginActivity::class.java)
+                startActivity(loginIntent)
+            }
+
+            // Set onClickListener to navigate to SignUpActivity
+            signUpButton.setOnClickListener {
+                val signUpIntent = Intent(this, SignUpActivity::class.java)
+                startActivity(signUpIntent)
+            }
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Toast.makeText(this, "Error initializing Firebase or UI components", Toast.LENGTH_LONG).show()
         }
-
-        // Get the database path
-        val databaseName = "campus_connect.db"
-        val databasePath = getDatabasePath(databaseName)
-
-        Log.d("Database Path", "Database is stored at: $databasePath")
-
-    }
-
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Welcome to $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    Campus_connectTheme {
-        Greeting("Campus Connect") // Updated preview message
     }
 }
-

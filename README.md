@@ -23,7 +23,7 @@ Campus Connect is a mobile application designed to improve university campus lif
 
 ## Technologies Used
 - **Language**: Kotlin
-- **Database**: SQLite (integrated with Android’s Room API for efficient local storage).
+- **Database**: Firebase Database.
 - **User Interface**: XML layouts with Android Views and ViewGroups.
 - **Image Handling**: Gallery access and image compression for profile photos.
 - **Android Architecture**: MVVM (Model-View-ViewModel) for clear separation of concerns.
@@ -74,7 +74,7 @@ CampusConnect/
 │   │   ├── main/
 │   │   │   ├── java/com/icsa/campus_connect/
 │   │   │   │   ├── activities/          # Activity classes (e.g., SignUpActivity, LoginActivity)
-│   │   │   │   ├── database/            # SQLite Database Helper
+│   │   │   │   ├── database/            # SQLite Database Helper --not needed for now
 │   │   │   │   ├── repository/          # Repository classes for database operations
 │   │   │   │   ├── models/              # Data models (e.g., UserModel, EventModel)
 │   │   ├── res/

@@ -12,11 +12,14 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.storage.FirebaseStorage
 import com.icsa.campus_connect.R
-import com.icsa.campus_connect.repository.UserRepository
 import com.icsa.campus_connect.repository.User
 import java.io.ByteArrayOutputStream
 import java.io.InputStream
+import java.security.MessageDigest
 
 class SignUpActivity : AppCompatActivity() {
 
@@ -29,8 +32,11 @@ class SignUpActivity : AppCompatActivity() {
     private lateinit var signUpButton: Button
     private lateinit var selectPhotoButton: Button
     private lateinit var profileImageView: ImageView
-    private lateinit var userRepository: UserRepository
     private var selectedPhoto: ByteArray? = null // Store the photo as a byte array
+
+    private lateinit var auth: FirebaseAuth
+    private val database = FirebaseDatabase.getInstance().reference.child("users")
+    private val storage = FirebaseStorage.getInstance().reference.child("profilePhotos")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,7 +53,7 @@ class SignUpActivity : AppCompatActivity() {
         selectPhotoButton = findViewById(R.id.selectPhotoButton)
         profileImageView = findViewById(R.id.profileImageView)
 
-        userRepository = UserRepository(this)
+        auth = FirebaseAuth.getInstance()
 
         // Select Photo Button Logic
         selectPhotoButton.setOnClickListener {
@@ -75,19 +81,87 @@ class SignUpActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            // Save user to database
-            val user = User(0, name, email, phone, userType, selectedPhoto, password)
-            val result = userRepository.registerUser(user)
+            // Register user
+            registerUser(name, email, phone, userType, password)
+        }
+    }
 
-            if (result > 0) {
-                Toast.makeText(this, "Sign-Up Successful!", Toast.LENGTH_SHORT).show()
-                finish() // Return to previous activity (e.g., LoginActivity)
+    // Hashing function for passwords
+    private fun hashPassword(password: String): String {
+        val digest = MessageDigest.getInstance("SHA-256")
+        val hashBytes = digest.digest(password.toByteArray())
+        return hashBytes.joinToString("") { "%02x".format(it) }
+    }
+
+    // Register user using Firebase Authentication
+    private fun registerUser(name: String, email: String, phone: String, userType: String, password: String) {
+        auth.createUserWithEmailAndPassword(email, password)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val userId = auth.currentUser?.uid ?: return@addOnCompleteListener
+                    val hashedPassword = hashPassword(password)
+                    saveUserToDatabase(userId, name, email, phone, userType, hashedPassword)
+                } else {
+                    Toast.makeText(this, "Registration failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+                }
+            }
+    }
+
+    // Save user information to Firebase Realtime Database
+    private fun saveUserToDatabase(
+        userId: String,
+        name: String,
+        email: String,
+        phone: String,
+        userType: String,
+        password: String
+    ) {
+        val user = User(userId, name, email, phone, userType, userPassword = password)
+
+        database.child(userId).setValue(user).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                // If the profile photo is selected, upload it to Firebase Storage
+                if (selectedPhoto != null) {
+                    uploadProfilePhoto(userId)
+                } else {
+                    Toast.makeText(this, "Sign-Up Successful!", Toast.LENGTH_SHORT).show()
+                    finish()
+                }
             } else {
-                Toast.makeText(this, "Sign-Up Failed. Try again.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Failed to save user data. Try again.", Toast.LENGTH_SHORT).show()
             }
         }
     }
 
+    // Upload profile photo to Firebase Storage
+    private fun uploadProfilePhoto(userId: String) {
+        val photoRef = storage.child(userId)
+        selectedPhoto?.let {
+            photoRef.putBytes(it)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        // Get the download URL and update the user's profile
+                        photoRef.downloadUrl.addOnSuccessListener { uri ->
+                            database.child(userId).child("profilePhoto").setValue(uri.toString())
+                                .addOnCompleteListener { dbTask ->
+                                    if (dbTask.isSuccessful) {
+                                        Toast.makeText(this, "Sign-Up Successful!", Toast.LENGTH_SHORT).show()
+                                        finish()
+                                    } else {
+                                        Toast.makeText(this, "Failed to save profile photo URL. Try again.", Toast.LENGTH_SHORT).show()
+                                    }
+                                }
+                        }
+                    } else {
+                        Toast.makeText(this, "Failed to upload profile photo. Try again.", Toast.LENGTH_SHORT).show()
+                    }
+                }
+        } ?: run {
+            Toast.makeText(this, "No photo selected", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    // Handle photo selection result
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_CODE_SELECT_PHOTO && resultCode == Activity.RESULT_OK && data != null) {
@@ -97,7 +171,7 @@ class SignUpActivity : AppCompatActivity() {
                 val bitmap = BitmapFactory.decodeStream(inputStream)
                 profileImageView.setImageBitmap(bitmap) // Display the selected image
 
-                // Convert Bitmap to ByteArray for storing in the database
+                // Convert Bitmap to ByteArray for storing in Firebase Storage
                 val outputStream = ByteArrayOutputStream()
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
                 selectedPhoto = outputStream.toByteArray()
