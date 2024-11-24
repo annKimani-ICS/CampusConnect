@@ -1,8 +1,7 @@
-package com.example.campus_connect.ui.theme
+package com.icsa.campus_connect.ui.theme
 
 
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,16 +15,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.campus_connect.model.Event
-
-import androidx.compose.foundation.layout.*
+import com.icsa.campus_connect.model.Event
 
 import androidx.compose.material3.*
-import androidx.compose.runtime.*
-
-import androidx.compose.ui.unit.dp
-
-
 
 
 @Composable

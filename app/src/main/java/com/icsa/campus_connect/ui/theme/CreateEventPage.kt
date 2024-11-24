@@ -1,4 +1,4 @@
-package com.example.campus_connect.ui.theme
+package com.icsa.campus_connect.ui.theme
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -17,24 +17,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.pointer.PointerIcon.Companion.Text
-import androidx.compose.ui.semantics.SemanticsProperties.Text
-import androidx.compose.ui.text.input.KeyboardType.Companion.Text
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.campus_connect.model.Event
-import com.example.campus_connect.viewmodel.EventViewModel
-import com.google.android.material.chip.Chip
+import com.icsa.campus_connect.model.Event
+import com.icsa.campus_connect.viewmodel.EventViewModel
 
 
-
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.*
-import androidx.compose.runtime.*
 
-
-import androidx.compose.ui.unit.dp
 
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
@@ -119,26 +109,24 @@ fun CreateEventPage(
         // Save button
         Button(
             onClick = {
-                val eventToSave = if (initialEvent != null) {
-                    // Update existing event
-                    initialEvent.copy(
+                val eventToSave = // Update existing event
+                    initialEvent?.copy(
                         title = title,
                         description = description,
                         date = date,
                         link = link,
                         tags = tags
                     )
-                } else {
-                    // Create new event
+                    ?: // Create new event
                     Event(
                         title = title,
                         description = description,
                         date = date,
                         link = link,
                         imageUrl = "example",
-                        tags = tags
+                        tags = tags,
+                        id = 1.toString()
                     )
-                }
 
                 // Save event
                 if (initialEvent != null) {
@@ -166,7 +154,8 @@ fun CreateEventPagePreview() {
         date = "2024-11-24",
         imageUrl = "null",
         link = "https://example.com",
-        tags = listOf("Music", "Tech")
+        tags = listOf("Music", "Tech"),
+        id = 1.toString()
     )
 
     // Preview the CreateEventPage with mock data

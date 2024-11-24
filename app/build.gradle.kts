@@ -65,16 +65,18 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.appcompat)
     // Import the Firebase BoM
-    implementation(platform("com.google.firebase:firebase-bom:33.6.0"))
+    implementation(libs.firebase.bom)
     // Add the dependencies for Firebase products you want to use
-    implementation("com.google.firebase:firebase-analytics")
-    implementation("com.google.firebase:firebase-auth-ktx")
-    implementation("com.google.firebase:firebase-storage-ktx")
+    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.auth.ktx)
+    implementation(libs.firebase.storage.ktx)
     implementation(libs.firebase.database.ktx) // If you use authentication
     // Add the dependencies for any other desired Firebase products
     // https://firebase.google.com/docs/android/setup#available-libraries
 
     implementation ("com.squareup.picasso:picasso:2.71828")
+    implementation(libs.androidx.navigation.runtime.ktx)
+    implementation(libs.androidx.navigation.compose)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
