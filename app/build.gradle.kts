@@ -79,6 +79,8 @@ dependencies {
     implementation ("com.github.bumptech.glide:glide:4.16.0")
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.compose.material)
+    implementation(libs.play.services.drive)
+    implementation(libs.firebase.firestore.ktx)
     annotationProcessor ("com.github.bumptech.glide:compiler:4.16.0")
 
     // Coroutines
@@ -100,4 +102,9 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    implementation(libs.material3)
+    implementation(libs.ui.tooling) // For preview
+    implementation(libs.ui.tooling.preview) // For preview in design editor
+
 }

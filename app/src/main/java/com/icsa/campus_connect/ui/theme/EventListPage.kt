@@ -16,8 +16,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.icsa.campus_connect.model.Event
-import com.icsa.campus_connect.ui.theme.CampusConnectTheme
 import com.icsa.campus_connect.viewmodel.EventViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 
@@ -119,7 +119,7 @@ fun EventListPagePreview() {
             imageUrl = "null",
             description = "This is a description for the first sample event.",
             date = "2024-11-25",
-            link="ee",
+            link = "ee",
             tags = listOf("Science", "Workshop")
         ),
         Event(
@@ -127,27 +127,25 @@ fun EventListPagePreview() {
             title = "Sample Event 2",
             description = "This is a description for the second sample event.",
             date = "2024-12-01",
-            link="e",
-            imageUrl="kk",
+            link = "e",
+            imageUrl = "kk",
             tags = listOf("Technology", "Lecture")
         )
     )
 
-    // Mock EventViewModel with sample data
+    // Mock EventViewModel with proper StateFlow
     val mockViewModel = object : EventViewModel() {
-        override val events: StateFlow<List<Event>> =
-            kotlinx.coroutines.flow.flowOf(mockEvents) as StateFlow<List<Event>> // Flow with mock data
+        override val events: StateFlow<List<Event>> = MutableStateFlow(mockEvents)
     }
 
-    CampusConnectTheme {
-        EventListPage(
-            viewModel = mockViewModel,
-            onEditEvent = { /* Do nothing */ },
-            onAddEvent = { /* Do nothing */ },
-            navController = rememberNavController() // Mock NavController for preview
-        )
-    }
+    EventListPage(
+        viewModel = EventViewModel(),
+        onEditEvent = { /* Do nothing */ },
+        onAddEvent = { /* Do nothing */ },
+        navController = rememberNavController() // Mock NavController for preview
+    )
 }
+
 @Composable
 fun EventListItem(
     event: Event,

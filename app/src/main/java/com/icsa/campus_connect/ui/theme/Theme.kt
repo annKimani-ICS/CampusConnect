@@ -1,4 +1,4 @@
-package com.example.campus_connect.ui.theme
+package com.icsa.campus_connect.ui.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -9,6 +9,13 @@ import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
+import com.example.campus_connect.ui.theme.Pink40
+import com.example.campus_connect.ui.theme.Pink80
+import com.example.campus_connect.ui.theme.Purple40
+import com.example.campus_connect.ui.theme.Purple80
+import com.example.campus_connect.ui.theme.PurpleGrey40
+import com.example.campus_connect.ui.theme.PurpleGrey80
+import com.example.campus_connect.ui.theme.Typography
 
 private val DarkColorScheme = darkColorScheme(
     primary = Purple80,
@@ -29,7 +36,7 @@ fun CampusConnectTheme(
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
+        dynamicColor -> {
             val context = LocalContext.current
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
