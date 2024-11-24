@@ -99,7 +99,7 @@ class SignUpActivity : AppCompatActivity() {
     }
 
     // Hashing function for passwords
-    fun hashPassword(password: String): String {
+    private fun hashPassword(password: String): String {
         val digest = MessageDigest.getInstance("SHA-256")
         val hashBytes = digest.digest(password.toByteArray())
         return hashBytes.joinToString("") { "%02x".format(it) }
