@@ -76,4 +76,15 @@
         android:textColor="@android:color/white"
         android:textSize="18sp" />
 
+    <Button
+        android:id="@+id/logoutButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="Log Out"
+        android:layout_marginTop="16dp"
+        android:background="@color/buttonColor"
+        android:textColor="@android:color/white"
+        android:padding="10dp"/>
+
 </LinearLayout>

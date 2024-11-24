@@ -1,6 +1,8 @@
 package com.icsa.campus_connect.activities
 
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -11,6 +13,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.icsa.campus_connect.R
+import com.icsa.campus_connect.MainActivity
 import com.icsa.campus_connect.repository.User
 import com.squareup.picasso.Picasso
 
@@ -24,8 +27,10 @@ class ProfileActivity : AppCompatActivity() {
         val userId = FirebaseAuth.getInstance().currentUser?.uid
 
         if (userId == null) {
-            // If the user is null, show an error
+            // If the user is null, show an error and return to login
             Toast.makeText(this, "No user is logged in", Toast.LENGTH_SHORT).show()
+            startActivity(Intent(this, MainActivity::class.java))
+            finish()
             return
         }
 
@@ -62,5 +67,16 @@ class ProfileActivity : AppCompatActivity() {
                 Toast.makeText(this@ProfileActivity, "Error fetching user data: ${error.message}", Toast.LENGTH_SHORT).show()
             }
         })
+
+        // Set up the logout button
+        val logoutButton: Button = findViewById(R.id.logoutButton)
+        logoutButton.setOnClickListener {
+            FirebaseAuth.getInstance().signOut()
+            Toast.makeText(this, "Logged out successfully", Toast.LENGTH_SHORT).show()
+            val intent = Intent(this, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(intent)
+            finish()
+        }
     }
 }
