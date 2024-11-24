@@ -81,10 +81,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="Log Out"
         android:layout_marginTop="16dp"
-        android:background="@color/buttonColor"
+        android:background="#9969E4"
+        android:fontFamily="@font/ar_one_sans"
+        android:padding="10dp"
+        android:text="@string/log_out"
         android:textColor="@android:color/white"
-        android:padding="10dp"/>
+        android:textStyle="bold" />
 
 </LinearLayout>
