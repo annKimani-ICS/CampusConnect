@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.campus_connect.R
 import com.google.firebase.database.FirebaseDatabase
 import com.icsa.campus_connect.activities.LoginActivity
 import com.icsa.campus_connect.activities.SignUpActivity

@@ -7,15 +7,14 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.campus_connect.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.icsa.campus_connect.R
 import com.icsa.campus_connect.MainActivity
 import com.icsa.campus_connect.repository.User
-import com.squareup.picasso.Picasso
 
 class ProfileActivity : AppCompatActivity() {
 
@@ -52,11 +51,11 @@ class ProfileActivity : AppCompatActivity() {
 
                     // Load profile photo using Picasso or set a default
                     val profileImageView = findViewById<ImageView>(R.id.profilePicture)
-                    if (user.profilePhotoUrl.isNotEmpty()) {
-                        Picasso.get().load(user.profilePhotoUrl).into(profileImageView)
-                    } else {
-                        profileImageView.setImageResource(R.drawable.default_profile_image)
-                    }
+//                    if (user.profilePhotoUrl.isNotEmpty()) {
+//                        Picasso.get().load(user.profilePhotoUrl).into(profileImageView)
+//                    } else {
+//                        profileImageView.setImageResource(R.drawable.default_profile_image)
+//                    }
                 } else {
                     // Handle the case where no user data is found
                     Toast.makeText(this@ProfileActivity, "User data not found", Toast.LENGTH_SHORT).show()
