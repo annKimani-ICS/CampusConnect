@@ -2,6 +2,7 @@ package com.icsa.campus_connect.activities
 
 import android.app.Activity
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
@@ -148,36 +149,67 @@ class SignUpActivity : AppCompatActivity() {
     }
 
     private fun uploadProfilePhoto(userId: String) {
-        val photoRef = storage.child("users/$userId/profilePhoto.jpg")
-        selectedPhoto?.let {
-            photoRef.putBytes(it)
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        photoRef.downloadUrl.addOnSuccessListener { uri ->
-                            database.child(userId).child("profilePhotoUrl").setValue(uri.toString())
-                                .addOnCompleteListener { dbTask ->
-                                    if (dbTask.isSuccessful) {
-                                        Toast.makeText(this, "Sign-Up Successful!", Toast.LENGTH_SHORT).show()
-                                        redirectToLogin()
-                                    } else {
-                                        Log.e("FirebasePhoto", "Failed to save profile photo URL to database: ${dbTask.exception?.message}")
-                                        Toast.makeText(this, "Failed to save profile photo URL. Try again.", Toast.LENGTH_SHORT).show()
-                                    }
-                                }
-                        }.addOnFailureListener { exception ->
-                            Log.e("FirebasePhoto", "Failed to get photo URL: ${exception.message}")
-                            Toast.makeText(this, "Failed to get photo URL. Try again.", Toast.LENGTH_SHORT).show()
-                        }
-                    } else {
-                        Log.e("FirebasePhoto", "Failed to upload profile photo: ${task.exception?.message}")
-                        Toast.makeText(this, "Failed to upload profile photo. Try again.", Toast.LENGTH_SHORT).show()
-                    }
-                }
-        } ?: run {
-            Log.e("FirebasePhoto", "No photo selected")
+        val photoRef = storage.child("profilePhotos/users/$userId/profilePhoto.jpg") // Update to match the intended path
+
+        if (selectedPhoto == null || selectedPhoto!!.isEmpty()) {
+            Log.e("FirebasePhoto", "No image data to upload or image data is empty.")
             Toast.makeText(this, "No photo selected", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        photoRef.putBytes(selectedPhoto!!)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    photoRef.downloadUrl.addOnSuccessListener { uri ->
+                        database.child(userId).child("profilePhotoUrl").setValue(uri.toString())
+                            .addOnCompleteListener { dbTask ->
+                                if (dbTask.isSuccessful) {
+                                    Toast.makeText(this, "Sign-Up Successful!", Toast.LENGTH_SHORT).show()
+                                    redirectToLogin()
+                                } else {
+                                    Log.e("FirebasePhoto", "Failed to save profile photo URL to database: ${dbTask.exception?.message}")
+                                    Toast.makeText(this, "Failed to save profile photo URL. Try again.", Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                    }.addOnFailureListener { exception ->
+                        Log.e("FirebasePhoto", "Failed to get photo URL: ${exception.message}")
+                        Toast.makeText(this, "Failed to get photo URL. Try again.", Toast.LENGTH_SHORT).show()
+                    }
+                } else {
+                    Log.e("FirebasePhoto", "Failed to upload profile photo: ${task.exception?.message}")
+                    Toast.makeText(this, "Failed to upload profile photo. Try again.", Toast.LENGTH_SHORT).show()
+                }
+            }
+    }
+
+    class SignUpActivity : AppCompatActivity() {
+
+        companion object {
+            private const val REQUEST_CODE_SELECT_PHOTO = 1
+            private const val REQUEST_CODE_STORAGE_PERMISSION = 2
+        }
+
+        // Rest of your class code
+
+        private fun checkStoragePermissions() {
+            if (checkSelfPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(arrayOf(android.Manifest.permission.READ_EXTERNAL_STORAGE), REQUEST_CODE_STORAGE_PERMISSION)
+            }
+        }
+
+        override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+            if (requestCode == REQUEST_CODE_STORAGE_PERMISSION) {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // Permission granted
+                    Toast.makeText(this, "Storage permission granted", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this, "Storage permission is required to upload profile photo", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
     }
+
 
     // Redirect to LoginActivity after successful registration
     private fun redirectToLogin() {
@@ -187,7 +219,6 @@ class SignUpActivity : AppCompatActivity() {
         finish()
     }
 
-    // Handle photo selection result
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_CODE_SELECT_PHOTO && resultCode == Activity.RESULT_OK && data != null) {
@@ -197,9 +228,9 @@ class SignUpActivity : AppCompatActivity() {
                 val bitmap = BitmapFactory.decodeStream(inputStream)
                 profileImageView.setImageBitmap(bitmap) // Display the selected image
 
-                // Convert Bitmap to ByteArray for storing in Firebase Storage
+                // Compress Bitmap to ByteArray for storing in Firebase Storage
                 val outputStream = ByteArrayOutputStream()
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 50, outputStream) // Compress to 50% quality
                 selectedPhoto = outputStream.toByteArray()
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -207,6 +238,7 @@ class SignUpActivity : AppCompatActivity() {
             }
         }
     }
+
 
     companion object {
         private const val REQUEST_CODE_SELECT_PHOTO = 1
