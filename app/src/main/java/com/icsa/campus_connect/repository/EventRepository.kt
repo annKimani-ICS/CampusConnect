@@ -5,11 +5,11 @@ import android.content.ContentValues
 import android.content.Context
 
 data class Event(
-    val eventId: Int = 0,
-    val userId: Int,
+    val eventId: String = "0",
+    val userId: String?,
     val eventDate: String,
     val eventName: String,
-    val eventPoster: ByteArray,
+    val eventPoster: String,
     val eventDescription: String,
     val rsvpLink: String
 )
@@ -39,11 +39,11 @@ class EventRepository(context: Context) {
             while (moveToNext()) {
                 events.add(
                     Event(
-                        eventId = getInt(getColumnIndexOrThrow("event_id")),
-                        userId = getInt(getColumnIndexOrThrow("user_id")),
+                        eventId = getInt(getColumnIndexOrThrow("event_id")).toString(),
+                        userId = getInt(getColumnIndexOrThrow("user_id")).toString(),
                         eventDate = getString(getColumnIndexOrThrow("event_date")),
                         eventName = getString(getColumnIndexOrThrow("event_name")),
-                        eventPoster = getBlob(getColumnIndexOrThrow("event_poster")),
+                        eventPoster = getBlob(getColumnIndexOrThrow("event_poster")).toString(),
                         eventDescription = getString(getColumnIndexOrThrow("event_description")),
                         rsvpLink = getString(getColumnIndexOrThrow("rsvp_link"))
                     )

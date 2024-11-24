@@ -26,9 +26,21 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".activities.EventListActivity"
+            android:exported="true"
+            android:theme="@style/Theme.CampusConnect">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
         <activity android:name=".activities.LoginActivity" />
         <activity android:name=".activities.SignUpActivity" />
         <activity android:name=".activities.ProfileActivity" />
+        <activity android:name=".activities.EventDetailActivity" />
+        <activity android:name=".activities.CreateEventActivity" />
 
 
         <meta-data

@@ -63,7 +63,7 @@ class LoginActivity : AppCompatActivity() {
                             if (user != null) {
                                 // Login successful, proceed to the ProfileActivity
                                 Toast.makeText(this@LoginActivity, "Login successful", Toast.LENGTH_SHORT).show()
-                                val intent = Intent(this@LoginActivity, ProfileActivity::class.java)
+                                val intent = Intent(this@LoginActivity, CreateEventActivity::class.java)
                                 startActivity(intent)
                                 finish() // Close login activity
                             } else {

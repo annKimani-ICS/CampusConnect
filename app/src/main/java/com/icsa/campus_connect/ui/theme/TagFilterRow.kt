@@ -72,17 +72,17 @@ fun TagFilterRowWithFilterPreview() {
         )
 
         // Display filtered events
-        LazyColumn(
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-            modifier = Modifier.fillMaxSize()
-        ) {
-            items(filteredEvents) { event ->
-                EventCard(
-                    event = event,
-                    onClick = { /* Handle click on event card */ }
-                )
-            }
-        }
+//        LazyColumn(
+//            verticalArrangement = Arrangement.spacedBy(8.dp),
+//            modifier = Modifier.fillMaxSize()
+//        ) {
+//            items(filteredEvents) { event ->
+//                EventCard(
+//                    event = event,
+//                    onClick = { /* Handle click on event card */ }
+//                )
+//            }
+//        }
     }
 }
 
