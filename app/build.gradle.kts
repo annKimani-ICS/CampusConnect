@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.plugin.KotlinTargetHierarchy.SourceSetTree.Companion.main
-
 plugins {
     alias(libs.plugins.android.application) // Keep this alias if it's configured correctly in your libs.versions.toml
     alias(libs.plugins.kotlin.android)
@@ -65,11 +63,11 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.appcompat)
     // Import the Firebase BoM
-    implementation(libs.firebase.bom)
+    implementation(platform("com.google.firebase:firebase-bom:33.6.0"))
     // Add the dependencies for Firebase products you want to use
-    implementation(libs.firebase.analytics)
-    implementation(libs.firebase.auth.ktx)
-    implementation(libs.firebase.storage.ktx)
+    implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-auth-ktx")
+    implementation("com.google.firebase:firebase-storage-ktx")
     implementation(libs.firebase.database.ktx) // If you use authentication
     // Add the dependencies for any other desired Firebase products
     // https://firebase.google.com/docs/android/setup#available-libraries
