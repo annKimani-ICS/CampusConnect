@@ -21,3 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "campus_connect"
 include(":app")
+ 

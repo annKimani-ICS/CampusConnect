@@ -1,15 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
 
-    <!-- Base application theme extending from Theme.AppCompat -->
-    <style name="Theme.CampusConnect" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here -->
-        <item name="colorPrimary">#9969E4</item>
-        <item name="colorPrimaryDark">@color/purple_700</item>
-        <item name="android:windowBackground">#000C18</item> <!-- Optional: Set default window background -->
-        <!-- AppCompat compatible attributes -->
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-
+    <style name="Theme.Campus_connect" parent="android:Theme.Material.Light.NoActionBar" />
 </resources>

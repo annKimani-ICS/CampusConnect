@@ -1,9 +1,8 @@
-package com.example.campus_connect.ui.theme
+package com.icsa.campus_connect.ui.theme
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -16,10 +15,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import androidx.wear.compose.material.ChipDefaults
-import com.example.campus_connect.model.Event
-import com.example.campus_connect.viewmodel.EventViewModel
-import kotlinx.coroutines.flow.Flow
+import com.icsa.campus_connect.model.Event
+import com.icsa.campus_connect.ui.theme.CampusConnectTheme
+import com.icsa.campus_connect.viewmodel.EventViewModel
 import kotlinx.coroutines.flow.StateFlow
 
 
