@@ -91,14 +91,7 @@ CampusConnect/
 - **Event Analytics**: Show statistics like event attendance trends and user participation.
 - **Integration with University Systems**: Sync events and announcements directly with university platforms.
 
-## Contributors
-- **Ann Wangari**
-  - **Role**: Programmer 1
-  - **Focus**: Profile and Authentication modules.
 
-- **Arnold Oguda**
-  - **Role**: Programmer 4
-  - **Focus**: API and Database Endpoint integration.
 
 (Additional team members can be added here)
 
