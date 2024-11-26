@@ -93,5 +93,4 @@ CampusConnect/
 
 
 
-(Additional team members can be added here)
 
